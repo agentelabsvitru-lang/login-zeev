@@ -1,0 +1,190 @@
+@charset "UTF-8";
+/* =====================================================================
+   Tela de login da Zeev - Vitru Educação
+   Hospedado no GitHub Pages e importado pelo campo de CSS da Zeev.
+   Equipe de Automação de Processos.
+
+   IMPORTANTE
+   - A regra que esconde o login do Google e o login local (usuário/senha)
+     NÃO fica aqui: ela fica no próprio campo da Zeev. Assim, se este
+     arquivo ficar fora do ar, a tela perde só o visual, mas o login
+     continua sendo apenas pela Microsoft.
+   - Depois de alterar este arquivo, troque o ?v= no endereço do campo da
+     Zeev (ex.: ?v=2 -> ?v=3) para os usuários não ficarem com a versão
+     antiga em cache.
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. FUNDO
+   Camada própria desenhada pelo bloco de login (::before), atrás de todo
+   o conteúdo. Ela fica por cima de qualquer fundo que a Zeev coloque fora
+   do bloco (era isso que deixava a tela cinza).
+   Camadas, de cima para baixo:
+   - arco amarelo no canto inferior direito;
+   - asterisco da Vitru vazado (SVG), saindo pela borda esquerda;
+   - esmaecimento da parte de baixo das faixas em V;
+   - faixas em V (duas diagonais translúcidas);
+   - cor de fundo.
+   --------------------------------------------------------------------- */
+#mfe-zeev-login {
+  position: relative;
+  z-index: 0;
+}
+
+#mfe-zeev-login::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* arco amarelo */
+    radial-gradient(circle at 117% 162%, #0000 39.1%, #F5C40080 0 39.3%, #0000 0),
+    /* asterisco vazado: contorno #F5C400 a 50%, espessura fina */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23F5C40080' stroke-width='.3'><path d='M40 0 50 27 60 0 75 5 63 37 95 25 100 40 73 50 100 60 95 75 63 63 75 95 60 100 50 73 40 100 25 95 37 63 5 75 0 60 27 50 0 40 5 25 37 37 25 5ZM42 50a8 8 0 1 0 16 0a8 8 0 1 0-16 0'/></svg>") -32vh 95% / 78vh no-repeat,
+    /* esmaecimento da parte de baixo das faixas */
+    linear-gradient(#0000 45%, #200346 78%) 0 / 40% no-repeat,
+    /* faixas em V */
+    linear-gradient(59deg, #0000 16%, #7b12c466 0 23%, #0000 0),
+    linear-gradient(118deg, #0000 22%, #7b12c455 0 30%, #0000 0),
+    /* cor de fundo */
+    #200346;
+}
+
+/* Contêineres da Zeev transparentes, para o fundo aparecer */
+#mfe-zeev-login :has(.login-form),
+.desktop-content-view {
+  background: #0000 !important;
+}
+
+/* Barras de rolagem discretas */
+* {
+  scrollbar-color: #fff3 #0000;
+}
+
+
+/* ---------------------------------------------------------------------
+   2. CARD DE LOGIN (vidro com relevo)
+   backdrop-filter: none é obrigatório: com desfoque no card, o logo
+   branco do canto (item 3) fica preso dentro do card.
+   --------------------------------------------------------------------- */
+.login-form {
+  position: relative;            /* referência para o logo da Zeev (item 5) */
+  height: auto !important;
+  margin-block: 0 !important;
+  background: #fffc !important;  /* branco a 80% */
+  backdrop-filter: none !important;
+  border-radius: 20px !important;
+  box-shadow:
+    0 30px 60px #000a,           /* sombra externa: card "flutuando" */
+    inset 0 2px #fff,            /* brilho na aresta de cima */
+    inset 0 -4px 12px #2003 !important; /* sombra interna embaixo: relevo */
+}
+
+
+/* ---------------------------------------------------------------------
+   3. LOGO BRANCO NO CANTO SUPERIOR ESQUERDO
+   Cópia do logo que a Zeev já mostra no card (configuração da conta),
+   recolorida por filtro: preto -> branco, amarelo continua amarelo.
+   Se o logo do card mudar na Zeev, este muda junto.
+   --------------------------------------------------------------------- */
+.logo-field::after {
+  content: "";
+  position: fixed;
+  top: 5vh;
+  left: 4vw;
+  width: 250px;
+  height: 100px;
+  background: inherit;
+  filter: invert(1) hue-rotate(188deg) brightness(2.8);
+}
+
+
+/* ---------------------------------------------------------------------
+   4. TÍTULO "PORTAL DE ATENDIMENTO" DENTRO DO CARD
+   Abaixo do logo, em caixa alta e espaçado (estilo do "EDUCAÇÃO"),
+   no roxo escuro da Vitru.
+   --------------------------------------------------------------------- */
+form::before {
+  content: "PORTAL DE ATENDIMENTO";
+  display: block;
+  text-align: center;
+  font: 700 16px Arial, sans-serif;
+  letter-spacing: .2em;
+  color: #290B53;
+  margin: 4px 0 18px;
+}
+
+
+/* ---------------------------------------------------------------------
+   5. LOGO DA ZEEV NO CANTO INFERIOR DIREITO DO CARD
+   Arquivo zeev-logo.png na mesma pasta deste CSS.
+   --------------------------------------------------------------------- */
+.login-form::after {
+  content: "";
+  position: absolute;
+  right: 28px;
+  bottom: 22px;
+  width: 64px;
+  height: 24px;
+  background: url(zeev-logo.png) 0 / contain no-repeat;
+  opacity: .8;
+}
+
+
+/* ---------------------------------------------------------------------
+   6. POSICIONAMENTO DO CARD
+   Coluna do card centralizada na vertical (celular e abas Monitorar /
+   Instalar no desktop).
+   --------------------------------------------------------------------- */
+.col-lg-4:has(.login-form) {
+  min-height: 100vh;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* ---------------------------------------------------------------------
+   7. SÓ NO DESKTOP
+   --------------------------------------------------------------------- */
+@media (min-width: 992px) {
+
+  /* Frase na parte de baixo, centralizada.
+     Linha 1 branca; linha 2 branca até "solicitações" e amarela depois.
+     O ponto de troca (6.3em) foi medido para a fonte Arial: se trocar a
+     fonte, ajuste esse valor. */
+  #mfe-zeev-login::after {
+    content: "Solicite, acompanhe e atenda\A solicitações em um só lugar";
+    white-space: pre;
+    position: fixed;
+    left: 50%;
+    bottom: 7vh;
+    translate: -50%;
+    padding-left: 1em;
+    border-left: 4px solid #F5C400;
+    font: 28px/1.3 Arial, sans-serif;
+    background:
+      linear-gradient(#fff 50%, #0000 0) text,
+      linear-gradient(90deg, #fff 6.3em, #F5C400 0) 0 100% / 100% 50% no-repeat text;
+    color: #0000;
+  }
+
+  /* Aba "Iniciar aplicativos" ativa: card fixo no centro da tela.
+     Centralizado com inset + margin:auto (sem transform, para não
+     prender o logo branco do item 3). */
+  :has(#appsCardsLg.active) .col-lg-4:has(.login-form) {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: 540px;
+    height: fit-content;
+    min-height: 0;
+    z-index: 9;
+  }
+
+  /* Mantém o painel da direita (abas) na posição original */
+  :has(#appsCardsLg.active) .desktop-content-view {
+    margin-left: 33%;
+  }
+}
