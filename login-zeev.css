@@ -20,12 +20,8 @@
    Camada própria desenhada pelo bloco de login (::before), atrás de todo
    o conteúdo. Ela fica por cima de qualquer fundo que a Zeev coloque fora
    do bloco (era isso que deixava a tela cinza).
-   Camadas, de cima para baixo:
-   - arco amarelo no canto inferior direito;
-   - asterisco da Vitru vazado (SVG), saindo pela borda esquerda;
-   - esmaecimento da parte de baixo das faixas em V;
-   - faixas em V (duas diagonais translúcidas);
-   - cor de fundo.
+   v2: as faixas em V e o arco desenhados em CSS foram substituídos pela
+   imagem oficial do key visual; o asterisco vazado continua por cima.
    --------------------------------------------------------------------- */
 #mfe-zeev-login {
   position: relative;
@@ -37,18 +33,15 @@
   position: fixed;
   inset: 0;
   z-index: -1;
+  /* Imagem de fundo (fundo-login.jpg, na mesma pasta deste CSS).
+     Ancorada no canto inferior esquerdo: em telas de outra proporcao,
+     o corte cai no topo e na direita, e as faixas em V ficam inteiras.
+     A cor #200346 aparece enquanto a imagem carrega ou se ela falhar. */
   background:
-    /* arco amarelo */
-    radial-gradient(circle at 117% 162%, #0000 39.1%, #F5C40080 0 39.3%, #0000 0),
-    /* asterisco vazado: contorno #F5C400 a 50%, espessura fina */
+    /* asterisco da Vitru vazado: contorno #F5C400 a 50%, espessura fina */
     url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23F5C40080' stroke-width='.3'><path d='M40 0 50 27 60 0 75 5 63 37 95 25 100 40 73 50 100 60 95 75 63 63 75 95 60 100 50 73 40 100 25 95 37 63 5 75 0 60 27 50 0 40 5 25 37 37 25 5ZM42 50a8 8 0 1 0 16 0a8 8 0 1 0-16 0'/></svg>") -32vh 95% / 78vh no-repeat,
-    /* esmaecimento da parte de baixo das faixas */
-    linear-gradient(#0000 45%, #200346 78%) 0 / 40% no-repeat,
-    /* faixas em V */
-    linear-gradient(59deg, #0000 16%, #7b12c466 0 23%, #0000 0),
-    linear-gradient(118deg, #0000 22%, #7b12c455 0 30%, #0000 0),
-    /* cor de fundo */
-    #200346;
+    /* imagem do key visual */
+    #200346 url(fundo-login.jpg) left bottom / cover no-repeat;
 }
 
 /* Contêineres da Zeev transparentes, para o fundo aparecer */
@@ -181,6 +174,29 @@ form::before {
     height: fit-content;
     min-height: 0;
     z-index: 9;
+  }
+
+  /* Abas do topo (Iniciar aplicativos / Monitorar / Instalar):
+     barra translúcida com desfoque, texto branco; aba ativa branca,
+     texto roxo e traço amarelo embaixo. */
+  .desktop-content-view .nav {
+    background: #ffffff1f !important;
+    border: 1px solid #ffffff26 !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(8px);
+  }
+  .desktop-content-view .nav-link {
+    color: #ffffffd9 !important;
+  }
+  .desktop-content-view .nav-link:hover {
+    color: #fff !important;
+  }
+  .desktop-content-view .nav-link.active {
+    background: #fff !important;
+    color: #3A1478 !important;
+    font-weight: 600;
+    box-shadow: inset 0 -3px #F5C400;
   }
 
   /* Mantém o painel da direita (abas) na posição original */
