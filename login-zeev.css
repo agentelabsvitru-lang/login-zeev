@@ -76,36 +76,39 @@
 
 
 /* ---------------------------------------------------------------------
-   3. LOGO BRANCO NO CANTO SUPERIOR ESQUERDO
-   Cópia do logo que a Zeev já mostra no card (configuração da conta),
-   recolorida por filtro: preto -> branco, amarelo continua amarelo.
-   Se o logo do card mudar na Zeev, este muda junto.
+   3. LOGO DE ASSINATURA NO CANTO SUPERIOR ESQUERDO
+   Vitru Educação | Uniasselvi | UniCesumar, versão negativa (branca).
+   Arquivo logo-assinatura.png na mesma pasta deste CSS.
    --------------------------------------------------------------------- */
 .logo-field::after {
   content: "";
   position: fixed;
   top: 5vh;
   left: 4vw;
-  width: 250px;
-  height: 100px;
-  background: inherit;
-  filter: invert(1) hue-rotate(188deg) brightness(2.8);
+  width: 420px;
+  max-width: 40vw;
+  height: 81px;
+  background: url(logo-assinatura.png) 0 0 / contain no-repeat;
 }
 
 
 /* ---------------------------------------------------------------------
-   4. TÍTULO "PORTAL DE ATENDIMENTO" DENTRO DO CARD
-   Abaixo do logo, em caixa alta e espaçado (estilo do "EDUCAÇÃO"),
-   no roxo escuro da Vitru.
+   4. TÍTULO "PORTAL DE ATENDIMENTO" ACIMA DO CARD
+   Fica na coluna do card (flex em coluna), então acompanha o card nas
+   três abas. Branco, caixa alta, espaçado; Segoe UI (Windows) com
+   alternativas equivalentes nos outros sistemas.
    --------------------------------------------------------------------- */
-form::before {
+.col-lg-4:has(.login-form)::before {
   content: "PORTAL DE ATENDIMENTO";
   display: block;
   text-align: center;
-  font: 700 16px Arial, sans-serif;
-  letter-spacing: .2em;
-  color: #290B53;
-  margin: 4px 0 18px;
+  font: 600 15px/1 "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: .35em;
+  text-indent: .35em;            /* compensa o espaço depois da última letra */
+  color: #fff;
+  opacity: .92;
+  margin-bottom: 22px;
+  text-shadow: 0 1px 8px #0006;
 }
 
 
